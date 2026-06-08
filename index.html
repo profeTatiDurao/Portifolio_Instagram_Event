@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Exemplos Visuais de addEventListener</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: linear-gradient(135deg, #6c63ff, #ff6b8b);
+      min-height: 100vh;
+      color: #222;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    h1 {
+      text-align: center;
+      color: #6c63ff;
+      margin-bottom: 10px;
+    }
+
+    .subtitulo {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .caixa {
+      margin: 16px 0;
+      padding: 18px;
+      border: 2px solid #eeeeee;
+      border-radius: 16px;
+      background-color: #fafafa;
+      transition: 0.3s;
+    }
+
+    .caixa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .caixa h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #ff6b8b;
+    }
+
+    input,
+    button {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 8px;
+      font-size: 15px;
+    }
+
+    button {
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #554be0;
+      transform: scale(1.03);
+    }
+
+    .area-interativa {
+      padding: 20px;
+      border-radius: 12px;
+      background-color: #eeeeff;
+      text-align: center;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .area-interativa.ativo {
+      background-color: #d8ffd8;
+      color: #008f5a;
+      transform: scale(1.02);
+    }
+
+    .painel {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 16px;
+      background-color: #11142d;
+      color: white;
+      min-height: 90px;
+    }
+
+    .painel h2 {
+      color: #ff6b8b;
+      margin-bottom: 10px;
+    }
+
+    #mensagemEvento {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .destaque {
+      color: #ffd166;
+      font-weight: bold;
+    }
+
+    .input-ativo {
+      border: 2px solid #6c63ff;
+      background-color: #eeeeff;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Exemplos Visuais de addEventListener</h1>
+
+    <p class="subtitulo">
+      Interaja com os elementos abaixo e veja os eventos acontecendo na própria página.
+    </p>
+
+    <!-- Click -->
+    <div class="caixa">
+      <h2>1. Evento de Clique</h2>
+      <p>Quando clicar no botão, uma mensagem aparecerá no painel.</p>
+      <button id="btnClick">Clique aqui</button>
+    </div>
+
+    <!-- Mouseover -->
+    <div class="caixa">
+      <h2>2. Evento Mouseover</h2>
+      <p>Passe o mouse sobre a área abaixo.</p>
+
+      <div class="area-interativa" id="mouseArea">
+        Passe o mouse aqui
+      </div>
+    </div>
+
+    <!-- Keydown -->
+    <div class="caixa">
+      <h2>3. Evento Keydown</h2>
+      <p>Pressione qualquer tecla do teclado.</p>
+      <p>Última tecla pressionada: <span class="destaque" id="teclaPressionada">nenhuma</span></p>
+    </div>
+
+    <!-- Submit -->
+    <div class="caixa">
+      <h2>4. Evento Submit</h2>
+      <p>Digite algo e envie o formulário.</p>
+
+      <form id="formExemplo">
+        <input type="text" id="campoFormulario" placeholder="Digite algo" required>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+
+    <!-- Touchstart -->
+    <div class="caixa">
+      <h2>5. Evento Touchstart</h2>
+      <p>Funciona melhor no celular ou tablet.</p>
+
+      <div class="area-interativa" id="touchArea">
+        Toque aqui no celular
+      </div>
+    </div>
+
+    <!-- Change -->
+    <div class="caixa">
+      <h2>6. Evento Change</h2>
+      <p>Digite algo no campo e depois clique fora dele.</p>
+
+      <input type="text" id="inputChange" placeholder="Altere o valor">
+      <p>Valor atual: <span class="destaque" id="valorAlterado">nenhum</span></p>
+    </div>
+
+    <!-- Focus e Blur -->
+    <div class="caixa">
+      <h2>7. Eventos Focus e Blur</h2>
+      <p>Clique dentro do campo e depois clique fora.</p>
+
+      <input type="text" id="inputFocus" placeholder="Clique aqui">
+    </div>
+
+    <!-- Painel visual -->
+    <div class="painel">
+      <h2>Painel de Eventos</h2>
+      <p id="mensagemEvento">Nenhum evento aconteceu ainda.</p>
+    </div>
+
+  </div>
+
+  <script>
+    const mensagemEvento = document.getElementById("mensagemEvento");
+
+    function mostrarMensagem(texto) {
+      mensagemEvento.textContent = texto;
+    }
+
+    // Click
+    document.getElementById("btnClick").addEventListener("click", function () {
+      mostrarMensagem("Evento click: o botão foi clicado.");
+      this.textContent = "Você clicou!";
+    });
+
+    // Mouseover
+    const mouseArea = document.getElementById("mouseArea");
+
+    mouseArea.addEventListener("mouseover", function () {
+      mostrarMensagem("Evento mouseover: o mouse passou por cima da área.");
+      mouseArea.classList.add("ativo");
+      mouseArea.textContent = "Mouse detectado!";
+    });
+
+    mouseArea.addEventListener("mouseout", function () {
+      mostrarMensagem("Evento mouseout: o mouse saiu da área.");
+      mouseArea.classList.remove("ativo");
+      mouseArea.textContent = "Passe o mouse aqui";
+    });
+
+    // Keydown
+    document.addEventListener("keydown", function (event) {
+      document.getElementById("teclaPressionada").textContent = event.key;
+      mostrarMensagem("Evento keydown: você pressionou a tecla " + event.key + ".");
+    });
+
+    // Submit
+    document.getElementById("formExemplo").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const textoDigitado = document.getElementById("campoFormulario").value;
+
+      mostrarMensagem("Evento submit: o formulário foi enviado com o texto: " + textoDigitado + ".");
+    });
+
+    // Touchstart
+    const touchArea = document.getElementById("touchArea");
+
+    touchArea.addEventListener("touchstart", function () {
+      mostrarMensagem("Evento touchstart: toque detectado na tela.");
+      touchArea.classList.add("ativo");
+      touchArea.textContent = "Toque detectado!";
+    });
+
+    // Change
+    document.getElementById("inputChange").addEventListener("change", function () {
+      document.getElementById("valorAlterado").textContent = this.value;
+      mostrarMensagem("Evento change: o valor do campo foi alterado para: " + this.value + ".");
+    });
+
+    // Focus e Blur
+    const inputFocus = document.getElementById("inputFocus");
+
+    inputFocus.addEventListener("focus", function () {
+      inputFocus.classList.add("input-ativo");
+      mostrarMensagem("Evento focus: o campo recebeu foco.");
+    });
+
+    inputFocus.addEventListener("blur", function () {
+      inputFocus.classList.remove("input-ativo");
+      mostrarMensagem("Evento blur: o campo perdeu o foco.");
+    });
+  </script>
+
+</body>
+
+</html>
